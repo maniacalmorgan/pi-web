@@ -1,0 +1,33 @@
+{
+  "name": "pi-web",
+  "version": "1.0.0",
+  "description": "Browser front-end for the pi coding agent — a WebSocket bridge to `pi --mode rpc` with a mobile-first UI",
+  "type": "module",
+  "main": "server.mjs",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "pi",
+    "pi-coding-agent",
+    "coding-agent",
+    "web-ui",
+    "websocket",
+    "tailscale",
+    "local-llm"
+  ],
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test/run-all.mjs",
+    "test:contract": "node test/test_pi_contract.mjs --fast",
+    "test:serve": "node test/test_server_bind.mjs"
+  },
+  "dependencies": {
+    "web-push": "^3.6.7",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.1"
+  }
+}

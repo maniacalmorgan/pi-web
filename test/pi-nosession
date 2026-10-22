@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Test-only pi wrapper: forces --no-session so automated verification never writes a
+# session file into your session rail. Pointed at via PI_BIN by the live tests
+# (the server does spawn(PI_BIN, [...]) — a binary path, not a command line, so an extra
+# flag MUST come from a wrapper like this).
+exec "${PI_REAL_BIN:-pi}" --no-session "$@"

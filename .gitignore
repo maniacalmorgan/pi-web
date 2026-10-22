@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# runtime state — VAPID keys and push subscriptions live here (mode 0600)
+data/
+
+# local config
+.env
+.env.*
+!.env.example
+
+# test scratch
+test/.scratch-session/
+test/.scratch-*/
+
+# editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# backups
+*.bak
+*.bak-*

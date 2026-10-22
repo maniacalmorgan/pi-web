@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Test-only pi wrapper: pins a SCRATCH session dir so live verification creates a real
+# session (needed for contextUsage) but NOT in your rail.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DIR="$HERE/.scratch-session"
+mkdir -p "$DIR"
+exec "${PI_REAL_BIN:-pi}" --session-dir "$DIR" "$@"

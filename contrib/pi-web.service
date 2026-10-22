@@ -1,0 +1,41 @@
+# Systemd USER unit for pi-web. Install with:
+#
+#   mkdir -p ~/.config/systemd/user
+#   cp contrib/pi-web.service ~/.config/systemd/user/
+#   systemctl --user edit --full pi-web.service      # fix the two paths below
+#   systemctl --user enable --now pi-web.service
+#   loginctl enable-linger "$USER"                   # survive logout / start at boot
+#
+# %h expands to your home directory, so the defaults work for a checkout at ~/pi-web.
+[Unit]
+Description=pi-web — browser GUI for the pi coding agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/pi-web
+# pi is usually in ~/.local/bin (npm's user prefix) or /usr/local/bin.
+Environment=PATH=%h/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PI_WEB_PORT=4321
+# auto = Tailscale address if present, else LAN, else loopback. Pin it (e.g.
+# PI_WEB_HOST=tailscale) if you want a missing tailnet to be a hard failure.
+Environment=PI_WEB_HOST=auto
+# Optional: a shared secret for the UI (see README "Access control").
+# Environment=PI_WEB_TOKEN=
+
+# Uncomment when PI_WEB_HOST=tailscale: blocks until the interface actually has an
+# address, so a boot-time race with tailscaled cannot strand the UI on 127.0.0.1.
+# ExecStartPre=%h/pi-web/contrib/wait-for-tailscale.sh
+
+ExecStart=/usr/bin/env node %h/pi-web/server.mjs
+Restart=always
+RestartSec=5
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

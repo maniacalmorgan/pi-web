@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#1e1e2e">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>pi web</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>π</text></svg>">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Left rail: sessions -->
+    <nav id="rail" aria-label="Sessions">
+      <div class="rail-head">
+        <span class="logo">π</span>
+        <span class="rail-title">pi web</span>
+        <button id="new-chat" class="icon-btn" title="New chat" aria-label="New chat">＋</button>
+      </div>
+      <div id="session-list" class="session-list"></div>
+      <div class="rail-foot">
+        <span id="cwd-label" class="cwd-label" title="">~</span>
+      </div>
+    </nav>
+    <div id="rail-scrim" class="rail-scrim hidden"></div>
+
+    <!-- Main column -->
+    <main id="main">
+      <header id="topbar">
+        <button id="rail-toggle" class="icon-btn" title="Sessions" aria-label="Toggle sessions">☰</button>
+        <!-- swipeable strip on mobile: title + controls scroll horizontally; ☰ stays pinned -->
+        <div id="topbar-scroll">
+          <div id="session-title" class="session-title" title="Click to rename">
+            <span id="session-name">—</span>
+          </div>
+          <div class="topbar-right">
+            <span id="status-pill" class="pill status-idle" title="Agent status">idle</span>
+            <select id="thinking-select" class="select" title="Thinking level"></select>
+            <select id="commands-select" class="select" title="Slash commands"></select>
+            <button id="compact-btn" class="icon-btn" title="Compact context">✂</button>
+            <button id="theme-btn" class="icon-btn" title="Toggle theme">☾</button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Popover: fork menu -->
+      <div id="fork-pop" class="popover hidden">
+        <div class="popover-title">Fork from message</div>
+        <div id="fork-list" class="fork-list"></div>
+      </div>
+
+      <div id="chat" class="chat" role="log" aria-live="polite"></div>
+
+      <div id="dialogs" class="dialogs"></div>
+      <div id="queue-bar" class="queue-bar hidden"></div>
+      <div id="toasts" class="toasts"></div>
+
+      <footer id="composer-wrap">
+        <div id="attach-preview" class="attach-preview hidden"></div>
+        <div id="slash-pop" class="popover slash-pop hidden"></div>
+        <div id="composer">
+          <button id="attach-btn" class="icon-btn" title="Attach files / images" aria-label="Attach">📎</button>
+          <textarea id="composer-input" rows="1" placeholder="Message pi…  ( / for commands )" enterkeyhint="send"></textarea>
+          <button id="send-btn" class="send-btn" title="Send">➤</button>
+          <button id="stop-btn" class="stop-btn hidden" title="Stop (abort)">■</button>
+        </div>
+        <!-- composer-bar stays a non-scrolling position:relative anchor: #model-pop is
+             a DIRECT child of it (NOT inside #composer-scroll) so the upward-opening
+             menu is never clipped by the scrollable strip. -->
+        <div id="composer-bar" class="composer-bar">
+          <!-- swipeable strip on mobile: pill + model + think scroll horizontally (topbar pattern) -->
+          <div id="composer-scroll">
+            <span id="context-pill" class="pill" title="Context window usage">ctx —</span>
+            <span class="model-anchor">
+              <button id="model-btn" class="pill model-btn" title="Switch model">model —</button>
+            </span>
+            <button id="think-btn" class="pill think-btn" title="Keep thinking expanded">🧠</button>
+            <button id="refresh-models" class="pill refresh-models" title="Reload the model list from LM Studio (restarts the pi process; your session is kept)">⟳ refresh</button>
+            <button id="notif-btn" class="pill notif-btn" title="Enable push notifications">🔔 off</button>
+          </div>
+          <div id="model-pop" class="popover hidden">
+            <div class="popover-title">Model</div>
+            <div id="model-list" class="model-list"></div>
+          </div>
+        </div>
+        <input type="file" id="file-input" multiple class="hidden">
+      </footer>
+    </main>
+  </div>
+
+  <script src="/vendor/marked.min.js"></script>
+  <script src="/vendor/purify.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
